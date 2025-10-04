@@ -19,6 +19,7 @@ struct arguments {
   int x; ///< The x position of the window
   int y; ///< The y position of the window
   bool verbose; ///< Verbose output
+  bool version; ///< Print version and exit
   bool edit; ///< Edit mode signal
 };
 

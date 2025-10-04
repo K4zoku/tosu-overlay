@@ -2,6 +2,10 @@
 #include "ipc.h"
 #include "app.h"
 
+static const char *NAME = "tosu-overlay";
+static const char *VERSION = "1.0.0";
+static const char *GIT_URL = "https://github.com/K4zoku/tosu-overlay";
+
 bool edit_mode = false;
 
 static void ipc_callback(__attribute__((unused)) const char *data) {
@@ -21,6 +25,11 @@ int main(int argc, char *argv[]) {
   if (error != 0) {
     fprintf(stderr, "Failed to parse arguments\n");
     return error;
+  }
+
+  if (options.version) {
+    printf("%s v%s\n%s\n", NAME, VERSION, GIT_URL);
+    return 0;
   }
 
   // if edit flag present, send a signal and exit
