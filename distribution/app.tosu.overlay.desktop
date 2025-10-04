@@ -1,0 +1,17 @@
+[Desktop Entry]
+Icon=tosu
+Name=Tosu Overlay
+Comment=Overlay for osu! Powered by Tosu, GTK and Webkit
+Exec=/usr/bin/tosu-overlay
+NoDisplay=false
+PrefersNonDefaultGPU=false
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Game;
+Actions=toggle-edit; 
+
+[Desktop Action toggle-edit]
+Exec=/usr/bin/tosu-overlay -e
+Name=Toggle overlay edit mode
+X-KDE-Shortcuts=Alt+Ctrl+Space

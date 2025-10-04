@@ -3,35 +3,19 @@ generator: doxide
 ---
 
 
-# Template
+# Tosu Overlay
 
-C Library project template
+An overlay for osu!. Powered by Tosu, GTK and Webkit
 
-:material-chart-pie: [Code Coverage](coverage/index.md)
+:material-format-section: [Application](app/index.md)
+:   
 
-## Functions
+:material-format-section: [Arguments](args/index.md)
+:   
 
-| Name | Description |
-| ---- | ----------- |
-| [hello_world](#hello_world) | A function to print "Hello World". |
+:material-format-section: [Inter-process communication](ipc/index.md)
+:   
 
-## Function Details
-
-### hello_world<a name="hello_world"></a>
-!!! function "void hello_world(void)"
-
-    A function to print "Hello World".
-    
-    
-    :material-location-enter: `void`
-    :    No parameters
-        
-    :material-keyboard-return: **Return**
-    :    void No return value
-    
-    
-    !!! danger
-    
-        We don't know where it prints to.
-    
+:material-format-section: [Webkit webview](webkit/index.md)
+:   
 

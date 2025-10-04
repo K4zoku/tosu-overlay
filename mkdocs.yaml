@@ -1,6 +1,6 @@
-site_name: Template
-site_url: https://k4zoku.github.io/kolle/
-repo_url: https://github.com/
+site_name: tosu-overlay
+site_url: https://k4zoku.github.io/tosu-overlay/
+repo_url: https://github.com/k4zoku/tosu-overlay
 
 extra:
   social:
@@ -17,8 +17,8 @@ theme:
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
-      primary: red
-      accent: cyan
+      primary: blue
+      accent: red
       toggle:
         icon: material/brightness-auto
         name: Switch to light mode
@@ -26,8 +26,8 @@ theme:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: red
-      accent: cyan
+      primary: blue
+      accent: red
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
@@ -35,13 +35,13 @@ theme:
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: red
-      accent: cyan
+      primary: blue
+      accent: red
       toggle:
         icon: material/brightness-4
         name: Switch to system preference
   icon:
-    logo: material/library-shelves
+    logo: logo
     repo: material/github
 markdown_extensions:
   - def_list

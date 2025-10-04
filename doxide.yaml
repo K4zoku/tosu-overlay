@@ -1,6 +1,15 @@
-title: Template
-description: C Library project template
+title: Tosu Overlay
+description: An overlay for osu!. Powered by Tosu, GTK and Webkit
 files:
   - "**/*.h"
   - "**/*.c"
-coverage: build/coverage.gcov
+groups:
+  - name: app
+    title: Application
+  - name: args
+    title: Arguments
+  - name: ipc
+    title: Inter-process communication
+  - name: webkit
+    title: Webkit webview
+# coverage: build/coverage.gcov
