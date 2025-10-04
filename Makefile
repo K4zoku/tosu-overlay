@@ -20,6 +20,6 @@ clean_tests:
 clean_docs:
 	doxide clean
 
-clean: clean_target clean_tests clean_coverage clean_docs
+clean: clean_target clean_tests clean_coverage
 
 .PHONY: $(IMPLICIT_PHONY) default info build docs clean clean_tests clean_docs
