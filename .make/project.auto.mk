@@ -28,10 +28,18 @@ ifeq ($(TYPE),lib)
         endif
     endif
 else ifeq ($(TYPE),bin)
-    TARGET:=$(NAME)
+    TARGET_BASENAME:=$(NAME)
     ifdef BIN_EXT
-        TARGET:=$(TARGET).$(BIN_EXT)
+        TARGET_BASENAME:=$(TARGET_BASENAME).$(BIN_EXT)
     endif
+    TARGET:=$(BINARY_DIRECTORY)/$(TARGET_BASENAME)
+
+install:
+	@cp -f $(TARGET) $(PREFIX)/bin
+
+uninstall:
+	@rm -f $(PREFIX)/bin/$(TARGET_BASENAME)
+
 else
     $(error Invalid target type)
 endif
@@ -75,7 +83,7 @@ ifeq ($(TYPE),lib)
     TEST_LDLIBS:=-l$(NAME) $(TEST_LDLIBS)
 endif
 
-$(OBJ): $(SRC)
+$(OBJECT_DIRECTORY)/%.o: $(SOURCE_DIRECTORY)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
@@ -131,5 +139,7 @@ clean_coverage:
 	$(RM) $(GCNO) $(GCDA)
 
 IMPLICIT_PHONY+=coverage clean_coverage
-
+else
+clean_coverage:
+	@true
 endif

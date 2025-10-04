@@ -24,7 +24,7 @@ ifndef $(and,$(PLATFORM),$(ARCHITECTURE))
             $(warning Could not determine platform)
         endif
 
-        UNAME_P:=$(shell uname -p)
+        UNAME_P:=$(shell uname -m)
         ifeq ($(UNAME_P),x86_64)
             ARCHITECTURE:=AMD64
         else ifneq ($(filter %86,$(UNAME_P)),)

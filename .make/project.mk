@@ -4,13 +4,16 @@
 # ------------------------- #
 
 # Name of the project
-NAME:=template
+NAME:=tosu-overlay
 
 # Output type, either `bin` or `lib`
-TYPE:=lib
+TYPE:=bin
 
 # Build profile, either `DEBUG` or `RELEASE`
-BUILD_PROFILE:=DEBUG
+BUILD_PROFILE?=DEBUG
+
+# Installation prefix
+PREFIX?=/usr
 
 project_info:
 	@echo "  * Project name: $(NAME)"
@@ -49,11 +52,13 @@ TEST_BINARY_DIRECTORY:=$(BUILD_DIRECTORY)/$(TEST_DIRECTORY)
 # COMPILER CONFIGURATION #
 # ---------------------- #
 
+LIBRARIES:=gtk+-3.0 webkit2gtk-4.1 gtk-layer-shell-0
+
 # Compiler to use
 CC:=clang
 
 # Compiler flags
-CFLAGS:=-ansi -pedantic
+CFLAGS:=-std=c11 `pkg-config --cflags $(LIBRARIES)`
 
 # Preprocessor flags
 CPPFLAGS:=-Wall -Wextra
@@ -62,7 +67,7 @@ CPPFLAGS:=-Wall -Wextra
 LDFLAGS:=
 
 # Libraries to link
-LDLIBS:=
+LDLIBS:=`pkg-config --libs $(LIBRARIES)`
 
 # ------------------- #
 # DEBUG CONFIGURATION #
@@ -130,7 +135,7 @@ TEST_LDLIBS:=
 
 # EXPERIMENTAL: Enable coverage report, supported only in DEBUG profile, and
 # compiler must be GCC or Clang
-ENABLE_COVERAGE:=1
+ENABLE_COVERAGE:=0
 
 # Coverage target file
 COVERAGE_TARGET:=$(BUILD_DIRECTORY)/coverage.gcov
