@@ -35,10 +35,7 @@ else ifeq ($(TYPE),bin)
     TARGET:=$(BINARY_DIRECTORY)/$(TARGET_BASENAME)
 
 install:
-	@cp -f $(TARGET) $(PREFIX)/bin
-
-uninstall:
-	@rm -f $(PREFIX)/bin/$(TARGET_BASENAME)
+	install -m755 $(TARGET) $(PREFIX)/bin
 
 else
     $(error Invalid target type)
