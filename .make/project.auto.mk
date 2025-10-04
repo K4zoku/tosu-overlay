@@ -35,7 +35,7 @@ else ifeq ($(TYPE),bin)
     TARGET:=$(BINARY_DIRECTORY)/$(TARGET_BASENAME)
 
 install:
-	install -m755 $(TARGET) $(PREFIX)/bin
+	install -Dm755 $(TARGET) $(PREFIX)/bin
 
 else
     $(error Invalid target type)
