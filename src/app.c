@@ -1,6 +1,5 @@
 #include "app.h"
 #include "args.h"
-#include "gtk/gtk.h"
 #include "webkit.h"
 
 GtkApplication *app;

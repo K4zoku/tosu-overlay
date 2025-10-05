@@ -1,6 +1,6 @@
-#include <stdlib.h>
-
 #include "args.h"
+
+#include <stdlib.h>
 
 struct arguments options;
 
