@@ -28,8 +28,7 @@ int ipc_init(int key, ipc_callback_t callback, bool read_only) {
 
   shmid = shmget(key, sizeof(struct ipc), read_only ? 0 : IPC_CREAT | 0666);
   if (shmid == -1) {
-    fprintf(stderr, "Failed to %s shared memory\nError: %d (%s)\n",
-            read_only ? "read" : "create", errno, strerror(errno));
+    fprintf(stderr, "Failed to %s shared memory\nError: %d (%s)\n", read_only ? "read" : "create", errno, strerror(errno));
     return errno;
   }
   ipc = (ipc_t)shmat(shmid, NULL, 0);

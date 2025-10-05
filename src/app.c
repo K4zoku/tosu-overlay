@@ -1,5 +1,6 @@
 #include "app.h"
 #include "args.h"
+#include "glib-object.h"
 #include "webkit.h"
 
 GtkApplication *app;
@@ -41,7 +42,9 @@ void app_set_edit_mode(bool edit) {
   }
 }
 
-void app_destroy() { g_object_unref(app); }
+void app_destroy() {
+  g_object_unref(app);
+}
 
 static void layer_shell_init() {
   GdkDisplay *display = gdk_display_get_default();
@@ -51,8 +54,7 @@ static void layer_shell_init() {
 
   gtk_layer_init_for_window(GTK_WINDOW(window));
   gtk_layer_set_layer(GTK_WINDOW(window), GTK_LAYER_SHELL_LAYER_OVERLAY);
-  gtk_layer_set_keyboard_mode(GTK_WINDOW(window),
-                              GTK_LAYER_SHELL_KEYBOARD_MODE_NONE);
+  gtk_layer_set_keyboard_mode(GTK_WINDOW(window), GTK_LAYER_SHELL_KEYBOARD_MODE_NONE);
 
   int monitors = gdk_display_get_n_monitors(display);
   if (options.monitor >= monitors) {
@@ -68,36 +70,28 @@ static void layer_shell_init() {
 
 static void enable_inputs() {
   if (gtk_layer_is_layer_window(GTK_WINDOW(window))) {
-    gtk_layer_set_keyboard_mode(GTK_WINDOW(window),
-                                GTK_LAYER_SHELL_KEYBOARD_MODE_EXCLUSIVE);
+    gtk_layer_set_keyboard_mode(GTK_WINDOW(window), GTK_LAYER_SHELL_KEYBOARD_MODE_EXCLUSIVE);
   }
-  gdk_window_input_shape_combine_region(gtk_widget_get_window(window), NULL, 0,
-                                        0);
+  gdk_window_input_shape_combine_region(gtk_widget_get_window(window), NULL, 0, 0);
 }
 
 static void disable_inputs() {
   if (gtk_layer_is_layer_window(GTK_WINDOW(window))) {
-    gtk_layer_set_keyboard_mode(GTK_WINDOW(window),
-                                GTK_LAYER_SHELL_KEYBOARD_MODE_NONE);
+    gtk_layer_set_keyboard_mode(GTK_WINDOW(window), GTK_LAYER_SHELL_KEYBOARD_MODE_NONE);
   }
-  gdk_window_input_shape_combine_region(gtk_widget_get_window(window),
-                                        cairo_region_create(), 0, 0);
+  gdk_window_input_shape_combine_region(gtk_widget_get_window(window), cairo_region_create(), 0, 0);
 }
 
 static void tosu_enable_edit_mode() {
   static GdkRGBA rgba = {.alpha = 0.3};
   webkit_web_view_set_background_color(web_view, &rgba);
-  webkit_web_view_evaluate_javascript(web_view,
-                                      "window.postMessage('editingStarted');",
-                                      -1, NULL, NULL, NULL, NULL, NULL);
+  webkit_web_view_evaluate_javascript(web_view, "window.postMessage('editingStarted');", -1, NULL, NULL, NULL, NULL, NULL);
 }
 
 static void tosu_disable_edit_mode() {
   static GdkRGBA rgba = {.alpha = 0.0};
   webkit_web_view_set_background_color(web_view, &rgba);
-  webkit_web_view_evaluate_javascript(web_view,
-                                      "window.postMessage('editingEnded');", -1,
-                                      NULL, NULL, NULL, NULL, NULL);
+  webkit_web_view_evaluate_javascript(web_view, "window.postMessage('editingEnded');", -1, NULL, NULL, NULL, NULL, NULL);
 }
 
 void activate() {
@@ -106,8 +100,7 @@ void activate() {
   layer_shell_init();
 
   // set basic window properties
-  gtk_window_set_default_size(GTK_WINDOW(window), options.width,
-                              options.height);
+  gtk_window_set_default_size(GTK_WINDOW(window), options.width, options.height);
   gtk_window_move(GTK_WINDOW(window), options.x, options.y);
   gtk_window_set_title(GTK_WINDOW(window), WINDOW_TITLE);
   gtk_widget_set_app_paintable(window, TRUE);

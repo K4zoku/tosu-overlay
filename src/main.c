@@ -1,6 +1,6 @@
+#include "app.h"
 #include "args.h"
 #include "ipc.h"
-#include "app.h"
 
 static const char *NAME = "tosu-overlay";
 static const char *VERSION = "1.0.0";
