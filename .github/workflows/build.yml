@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [main, gtk4]
+    branches: [main]
     paths:
       - ".github/workflows/build.yml"
       - "include/**/*"
@@ -32,8 +32,6 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: Prepare to install dependencies
-        run: sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ pluck universe"
       - name: Intall dependencies
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
