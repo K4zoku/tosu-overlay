@@ -18,7 +18,7 @@ static void tosu_enable_edit_mode();
 static void tosu_disable_edit_mode();
 
 void app_init() {
-  app = gtk_application_new(APPLICATION_ID, G_APPLICATION_NON_UNIQUE);
+  app = gtk_application_new(APPLICATION_ID, G_APPLICATION_REPLACE);
   g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
 
   static char *empty[0];
@@ -119,9 +119,8 @@ void activate() {
   
   // transparent background
   GtkCssProvider *css_provider = gtk_css_provider_new();
-  gtk_css_provider_load_from_string(css_provider, "window { background-color: transparent; }");
+  gtk_css_provider_load_from_string(css_provider, "window.background { background-color: transparent; }");
   gtk_style_context_add_provider_for_display(display, GTK_STYLE_PROVIDER(css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-  g_object_unref(css_provider);
 
   webkit_init();
   g_object_set(window, "child", web_view, NULL);
