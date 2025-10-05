@@ -1,6 +1,5 @@
 #include "app.h"
 #include "args.h"
-#include "glib-object.h"
 #include "webkit.h"
 
 GtkApplication *app;
@@ -103,23 +102,34 @@ void activate() {
   gtk_window_set_default_size(GTK_WINDOW(window), options.width, options.height);
   gtk_window_move(GTK_WINDOW(window), options.x, options.y);
   gtk_window_set_title(GTK_WINDOW(window), WINDOW_TITLE);
-  gtk_widget_set_app_paintable(window, TRUE);
-
-  // check if the screen supports transparency
-  GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(window));
-  if (!gdk_screen_is_composited(screen)) {
-    fprintf(stderr, "Your screen does not support transparency.\n");
-    fprintf(stderr, "Maybe your compositor isn't running?\n");
-    g_object_unref(app);
-    exit(2);
-  }
-  gtk_widget_set_visual(window, gdk_screen_get_rgba_visual(screen));
   gtk_widget_set_size_request(window, options.width, options.height);
-  gtk_window_fullscreen_on_monitor(GTK_WINDOW(window), screen, options.monitor);
+  gtk_window_resize(GTK_WINDOW(window), 1, 1);
+
+  GtkCssProvider *css_provider = gtk_css_provider_new();
+  gtk_css_provider_load_from_data(css_provider, "window { background-color: transparent; }", -1, NULL);
+  GtkStyleContext *style_context = gtk_widget_get_style_context(window);
+  gtk_style_context_add_provider(style_context, GTK_STYLE_PROVIDER(css_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  GdkDisplay *display = gdk_display_get_default();
+  if (!GDK_IS_WAYLAND_DISPLAY(display)) {
+    // check if the screen supports transparency
+    GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(window));
+    if (!gdk_screen_is_composited(screen)) {
+      fprintf(stderr, "Your screen does not support transparency.\n");
+      fprintf(stderr, "Maybe your compositor isn't running?\n");
+      g_object_unref(app);
+      exit(2);
+    }
+    GdkVisual *visual = gdk_screen_get_rgba_visual(screen);
+#if GTK_MAJOR_VERSION == 3
+    gtk_widget_set_visual(window, visual);
+#elif GTK_MAJOR_VERSION == 4
+    gtk_window_set_visual(window, visual);
+#endif
+    gtk_window_fullscreen_on_monitor(GTK_WINDOW(window), screen, options.monitor);
+  }
 
   webkit_init();
-  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(web_view));
-  gtk_container_set_border_width(GTK_CONTAINER(window), 0);
+  g_object_set(window, "child", web_view, NULL);
   gtk_widget_show_all(window);
   app_set_edit_mode(false);
 }
