@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
     name: Build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
