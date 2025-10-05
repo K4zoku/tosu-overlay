@@ -46,8 +46,7 @@ void app_destroy() {
 }
 
 static void layer_shell_init() {
-  GdkDisplay *display = gdk_display_get_default();
-  if (!GDK_IS_WAYLAND_DISPLAY(display)) {
+  if (!GDK_IS_WAYLAND_DISPLAY(gdk_display_get_default())) {
     return;
   }
 
@@ -55,12 +54,6 @@ static void layer_shell_init() {
   gtk_layer_set_layer(GTK_WINDOW(window), GTK_LAYER_SHELL_LAYER_OVERLAY);
   gtk_layer_set_keyboard_mode(GTK_WINDOW(window), GTK_LAYER_SHELL_KEYBOARD_MODE_NONE);
 
-  GListModel * monitors = gdk_display_get_monitors(display);
-  if ((guint) options.monitor >= g_list_model_get_n_items(monitors)) {
-    fprintf(stderr, "Invalid monitor %d\n", options.monitor);
-  }
-  GdkMonitor *monitor = g_list_model_get_item(monitors, options.monitor);
-  gtk_layer_set_monitor(GTK_WINDOW(window), monitor);
   static const gboolean anchors[] = {TRUE, FALSE, TRUE, FALSE};
   for (int i = 0; i < GTK_LAYER_SHELL_EDGE_ENTRY_NUMBER; i++) {
     gtk_layer_set_anchor(GTK_WINDOW(window), i, anchors[i]);
@@ -98,14 +91,36 @@ void activate() {
 
   layer_shell_init();
 
-  // set basic window properties
-  gtk_window_set_default_size(GTK_WINDOW(window), options.width, options.height);
-  gtk_window_set_title(GTK_WINDOW(window), WINDOW_TITLE);
-  gtk_widget_set_size_request(window, options.width, options.height);
+  GdkDisplay *display = gdk_display_get_default();
 
+  GListModel *monitors = gdk_display_get_monitors(display);
+  if ((guint)options.monitor >= g_list_model_get_n_items(monitors)) {
+    fprintf(stderr, "'%d' is not a valid monitor\n", options.monitor);
+    fprintf(stderr, "Valid monitors: \n");
+    for (guint i = 0; i < g_list_model_get_n_items(monitors); i++) {
+      GdkMonitor *monitor = g_list_model_get_item(monitors, i);
+      fprintf(stderr, "  Monitor %d: %s\n", i, gdk_monitor_get_model(monitor));
+    }
+    fprintf(stderr, "\n");
+    exit(1);
+  }
+  GdkMonitor *monitor = g_list_model_get_item(monitors, options.monitor);
+  GdkRectangle geometry;
+  gdk_monitor_get_geometry(monitor, &geometry);
+  
+  // set basic window properties
+  gtk_window_set_default_size(GTK_WINDOW(window), geometry.width, geometry.height);
+  gtk_window_set_title(GTK_WINDOW(window), WINDOW_TITLE);
+  gtk_window_fullscreen_on_monitor(GTK_WINDOW(window), monitor);
+
+  if (gtk_layer_is_layer_window(GTK_WINDOW(window))) {
+    gtk_layer_set_monitor(GTK_WINDOW(window), monitor);
+  }
+  
+  // transparent background
   GtkCssProvider *css_provider = gtk_css_provider_new();
   gtk_css_provider_load_from_string(css_provider, "window { background-color: transparent; }");
-  gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+  gtk_style_context_add_provider_for_display(display, GTK_STYLE_PROVIDER(css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
   g_object_unref(css_provider);
 
   webkit_init();

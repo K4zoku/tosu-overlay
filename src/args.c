@@ -6,17 +6,17 @@ struct arguments options;
 
 static char doc[] = "Just an overlay for osu!. Powered by Tosu, GTK and Webkit";
 static char args_doc[] =
-    "[-t tosu-url] [-m monitor] [-w width] [-h height] [-x x] [-y y] [-efvV]";
+    "[-t tosu-url] [-m monitor-id] [-w width] [-h height] [-x x] [-y y] [-efvV]";
 static struct argp_option argp_options[] = {
     {"tosu-url", 't', "tosu-url", OPTION_ARG_OPTIONAL, "The base URL of the Tosu server.", 0},
-    {"monitor", 'm', "monitor", OPTION_ARG_OPTIONAL, "The monitor number to display on.", 0},
-    {"fullscreen", 'f', 0, OPTION_ARG_OPTIONAL, "Fullscreen the window.", 0},
+    {"monitor", 'm', "monitor-id", OPTION_ARG_OPTIONAL, "The monitor number to display on.", 0},
+    // {"fullscreen", 'f', 0, OPTION_ARG_OPTIONAL, "Fullscreen the window.", 0},
     {"verbose", 'V', 0, OPTION_ARG_OPTIONAL, "Verbose output.", 0},
     {"version", 'v', 0, OPTION_ARG_OPTIONAL, "Print version and exit.", 0},
-    {"width", 'w', "width", OPTION_ARG_OPTIONAL, "The width of the window.", 0},
-    {"height", 'h', "height", OPTION_ARG_OPTIONAL, "The height of the window.", 0},
-    {"x", 'x', "x", OPTION_ARG_OPTIONAL, "The x position of the window.", 0},
-    {"y", 'y', "y", OPTION_ARG_OPTIONAL, "The y position of the window.", 0},
+    // {"width", 'w', "width", OPTION_ARG_OPTIONAL, "The width of the window.", 0},
+    // {"height", 'h', "height", OPTION_ARG_OPTIONAL, "The height of the window.", 0},
+    // {"x", 'x', "x", OPTION_ARG_OPTIONAL, "The x position of the window.", 0},
+    // {"y", 'y', "y", OPTION_ARG_OPTIONAL, "The y position of the window.", 0},
     {"ipc-edit", 'e', 0, OPTION_ARG_OPTIONAL, "Send an IPC signal to edit the overlay.", 0},
     {0}};
 
