@@ -4,10 +4,16 @@
 #define GTK_HEADER_H
 
 #include <gdk/gdk.h>
-#include <gdk/gdkwayland.h>
-#include <gtk-layer-shell.h>
+#include <gtk4-layer-shell.h>
 #include <gtk/gtk.h>
 #include <stdbool.h>
+
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/wayland/gdkwayland.h>
+#endif
+#ifdef GDK_WINDOWING_X11
+#include <gdk/x11/gdkx.h>
+#endif
 
 extern GtkApplication *app;
 extern GtkWidget *window;

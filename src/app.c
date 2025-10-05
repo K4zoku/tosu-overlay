@@ -1,5 +1,6 @@
 #include "app.h"
 #include "args.h"
+#include "gtk/gtk.h"
 #include "webkit.h"
 
 GtkApplication *app;
@@ -55,11 +56,11 @@ static void layer_shell_init() {
   gtk_layer_set_layer(GTK_WINDOW(window), GTK_LAYER_SHELL_LAYER_OVERLAY);
   gtk_layer_set_keyboard_mode(GTK_WINDOW(window), GTK_LAYER_SHELL_KEYBOARD_MODE_NONE);
 
-  int monitors = gdk_display_get_n_monitors(display);
-  if (options.monitor >= monitors) {
+  GListModel * monitors = gdk_display_get_monitors(display);
+  if ((guint) options.monitor >= g_list_model_get_n_items(monitors)) {
     fprintf(stderr, "Invalid monitor %d\n", options.monitor);
   }
-  GdkMonitor *monitor = gdk_display_get_monitor(display, options.monitor);
+  GdkMonitor *monitor = g_list_model_get_item(monitors, options.monitor);
   gtk_layer_set_monitor(GTK_WINDOW(window), monitor);
   static const gboolean anchors[] = {TRUE, FALSE, TRUE, FALSE};
   for (int i = 0; i < GTK_LAYER_SHELL_EDGE_ENTRY_NUMBER; i++) {
@@ -71,14 +72,14 @@ static void enable_inputs() {
   if (gtk_layer_is_layer_window(GTK_WINDOW(window))) {
     gtk_layer_set_keyboard_mode(GTK_WINDOW(window), GTK_LAYER_SHELL_KEYBOARD_MODE_EXCLUSIVE);
   }
-  gdk_window_input_shape_combine_region(gtk_widget_get_window(window), NULL, 0, 0);
+  gdk_surface_set_input_region(gtk_native_get_surface(GTK_NATIVE(window)), NULL);
 }
 
 static void disable_inputs() {
   if (gtk_layer_is_layer_window(GTK_WINDOW(window))) {
     gtk_layer_set_keyboard_mode(GTK_WINDOW(window), GTK_LAYER_SHELL_KEYBOARD_MODE_NONE);
   }
-  gdk_window_input_shape_combine_region(gtk_widget_get_window(window), cairo_region_create(), 0, 0);
+  gdk_surface_set_input_region(gtk_native_get_surface(GTK_NATIVE(window)), cairo_region_create());
 }
 
 static void tosu_enable_edit_mode() {
@@ -100,36 +101,16 @@ void activate() {
 
   // set basic window properties
   gtk_window_set_default_size(GTK_WINDOW(window), options.width, options.height);
-  gtk_window_move(GTK_WINDOW(window), options.x, options.y);
   gtk_window_set_title(GTK_WINDOW(window), WINDOW_TITLE);
   gtk_widget_set_size_request(window, options.width, options.height);
-  gtk_window_resize(GTK_WINDOW(window), 1, 1);
 
   GtkCssProvider *css_provider = gtk_css_provider_new();
-  gtk_css_provider_load_from_data(css_provider, "window { background-color: transparent; }", -1, NULL);
-  GtkStyleContext *style_context = gtk_widget_get_style_context(window);
-  gtk_style_context_add_provider(style_context, GTK_STYLE_PROVIDER(css_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  GdkDisplay *display = gdk_display_get_default();
-  if (!GDK_IS_WAYLAND_DISPLAY(display)) {
-    // check if the screen supports transparency
-    GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(window));
-    if (!gdk_screen_is_composited(screen)) {
-      fprintf(stderr, "Your screen does not support transparency.\n");
-      fprintf(stderr, "Maybe your compositor isn't running?\n");
-      g_object_unref(app);
-      exit(2);
-    }
-    GdkVisual *visual = gdk_screen_get_rgba_visual(screen);
-#if GTK_MAJOR_VERSION == 3
-    gtk_widget_set_visual(window, visual);
-#elif GTK_MAJOR_VERSION == 4
-    gtk_window_set_visual(window, visual);
-#endif
-    gtk_window_fullscreen_on_monitor(GTK_WINDOW(window), screen, options.monitor);
-  }
+  gtk_css_provider_load_from_string(css_provider, "window { background-color: transparent; }");
+  gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+  g_object_unref(css_provider);
 
   webkit_init();
   g_object_set(window, "child", web_view, NULL);
-  gtk_widget_show_all(window);
+  gtk_window_present(GTK_WINDOW(window));
   app_set_edit_mode(false);
 }

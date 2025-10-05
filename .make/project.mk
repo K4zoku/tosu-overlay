@@ -52,7 +52,7 @@ TEST_BINARY_DIRECTORY:=$(BUILD_DIRECTORY)/$(TEST_DIRECTORY)
 # COMPILER CONFIGURATION #
 # ---------------------- #
 
-LIBRARIES:=gtk+-3.0 webkit2gtk-4.1 gtk-layer-shell-0
+LIBRARIES:=gtk4 webkitgtk-6.0 gtk4-layer-shell-0
 
 # Compiler to use
 CC:=clang

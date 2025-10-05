@@ -3,7 +3,7 @@
 #ifndef WEBKIT_HEADER_H
 #define WEBKIT_HEADER_H
 
-#include <webkit2/webkit2.h>
+#include <webkit/webkit.h>
 
 extern WebKitWebView *web_view;
 
