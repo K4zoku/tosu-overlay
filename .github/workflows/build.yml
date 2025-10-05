@@ -28,10 +28,12 @@ jobs:
     strategy:
       fail-fast: false
     name: Build
-    runs-on: ubuntu-25.04
+    runs-on: ubuntu-24.04
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
+      - name: Prepare to install dependencies
+        run: sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ pluck universe"
       - name: Intall dependencies
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
