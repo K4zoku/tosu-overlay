@@ -21,6 +21,7 @@ struct arguments {
   bool version; ///< Print version and exit
   bool layer_shell_enabled; ///< Enable layer shell
   bool edit; ///< Edit mode signal
+  bool visible; ///< Visibility signal
 };
 
 extern struct argp argp;

@@ -41,6 +41,18 @@ void app_set_edit_mode(bool edit) {
   }
 }
 
+void app_set_visible(bool visible) {
+#if GTK_MAJOR_VERSION == 3
+  if (visible) {
+    gtk_widget_show(window);
+  } else {
+    gtk_widget_hide(window);
+  }
+#else
+  gtk_widget_set_visible(GTK_WIDGET(web_view), visible);
+#endif
+}
+
 void app_destroy() {
   g_object_unref(app);
 }

@@ -55,6 +55,15 @@ void app_init();
 void app_set_edit_mode(bool edit);
 
 /**
+ * Set the application visibility
+ *
+ * @param visible true if enable edit mode, false otherwise
+ *
+ * @ingroup app
+ */
+void app_set_visible(bool visible);
+
+/**
  * Destroy the application, free memory
  * @ingroup app
  */

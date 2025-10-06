@@ -30,16 +30,16 @@ jobs:
     name: Build
     runs-on: ubuntu-24.04
     steps:
-      - name: 🛒 Checkout
+      - name: Checkout 🛒
         uses: actions/checkout@v2
-      - name: Intall dependencies
+      - name: Intall dependencies 📥
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: libgtk-3-dev libwebkit2gtk-4.1-dev libgtk-layer-shell-dev libxcb-ewmh-dev
           version: 1.0
-      - name: 🏗️ Build
+      - name: Build 🏗️
         run: make BUILD_PROFILE=RELEASE
-      - name: 🚀 Upload artifacts
+      - name: Upload artifacts 🚀
         uses: actions/upload-artifact@v4
         with: {
           name: "tosu-overlay-${{ github.ref_name }}",

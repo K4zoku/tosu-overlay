@@ -14,6 +14,9 @@ struct ipc {
     char data[64]; ///< Extra data, preserve for future use
 };
 
+#define TO_IPC_COMMAND_TOGGLE_VISIBILITY (1 << 0)
+#define TO_IPC_COMMAND_TOGGLE_EDIT       (1 << 1)
+
 typedef struct ipc * ipc_t;
 
 typedef void(*ipc_callback_t)(const char * data);

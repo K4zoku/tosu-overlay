@@ -18,6 +18,7 @@ static struct argp_option argp_options[] = {
     {"x", 'x', "x", OPTION_ARG_OPTIONAL, "The x position of the overlay.", 0},
     {"y", 'y', "y", OPTION_ARG_OPTIONAL, "The y position of the overlay.", 0},
     {"ipc-edit", 'e', 0, OPTION_ARG_OPTIONAL, "Send an IPC signal to edit the overlay.", 0},
+    {"ipc-visible", 'i', 0, OPTION_ARG_OPTIONAL, "Send an IPC signal to toggle the overlay.", 0},
     {0}};
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
@@ -52,6 +53,9 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
     break;
   case 'e':
     arguments->edit = true;
+    break;
+  case 'i':
+    arguments->visible = true;
     break;
   case ARGP_KEY_ARG:
     return 0;

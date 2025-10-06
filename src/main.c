@@ -7,9 +7,18 @@ static const char *VERSION = "1.0.0";
 static const char *GIT_URL = "https://github.com/K4zoku/tosu-overlay";
 
 bool edit_mode = false;
+bool visible = true;
 
 static void ipc_callback(__attribute__((unused)) const char *data) {
-  app_set_edit_mode(edit_mode = !edit_mode);
+  int command = *(int *)data;
+
+  if (command & TO_IPC_COMMAND_TOGGLE_VISIBILITY) {
+    app_set_visible(visible = !visible);
+  }
+    
+  if (command & TO_IPC_COMMAND_TOGGLE_EDIT) {
+    app_set_edit_mode(edit_mode = !edit_mode);
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -31,6 +40,17 @@ int main(int argc, char *argv[]) {
   if (options.edit) {
     ipc_init(24050, NULL, true);
     fprintf(stderr, "Sending edit signal...\n");
+    ipc->data[0] = TO_IPC_COMMAND_TOGGLE_EDIT;
+    kill(ipc->pid, SIGUSR2);
+    ipc_destroy();
+    return 0;
+  }
+
+  // if visible flag present, send a signal and exit
+  if (options.visible) {
+    ipc_init(24050, NULL, true);
+    fprintf(stderr, "Sending visible signal...\n");
+    ipc->data[0] = TO_IPC_COMMAND_TOGGLE_VISIBILITY;
     kill(ipc->pid, SIGUSR2);
     ipc_destroy();
     return 0;
