@@ -39,9 +39,13 @@ jobs:
           version: 1.0
       - name: Build 🏗️
         run: make BUILD_PROFILE=RELEASE
+      - name: Define variables 📐
+        id: set-pr-sha
+        shell: bash
+        run: echo "SHORT_PR_SHA=$(git rev-parse HEAD | cut -c 1-7)" >> "$GITHUB_OUTPUT"
       - name: Upload artifacts 🚀
         uses: actions/upload-artifact@v4
         with: {
-          name: "tosu-overlay-${{ github.ref_name }}",
+          name: "tosu-overlay-${{ steps.set-pr-sha.outputs.SHORT_PR_SHA || github.ref_name }}",
           path: build/bin/tosu-overlay
         }
