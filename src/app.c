@@ -49,7 +49,7 @@ void app_set_visible(bool visible) {
     gtk_widget_hide(window);
   }
 #else
-  gtk_widget_set_visible(GTK_WIDGET(web_view), visible);
+  gtk_widget_set_visible(window, visible);
 #endif
 }
 
