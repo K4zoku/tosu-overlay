@@ -1,6 +1,5 @@
 #include "app.h"
 #include "args.h"
-#include "gtk/gtk.h"
 #include "webkit.h"
 
 GtkApplication *app;
@@ -95,6 +94,10 @@ static void tosu_disable_edit_mode() {
   webkit_web_view_evaluate_javascript(web_view, "window.postMessage('editingEnded');", -1, NULL, NULL, NULL, NULL, NULL);
 }
 
+static xcb_intern_atom_cookie_t xcb_intern(xcb_connection_t *c, char *name) {
+  return xcb_intern_atom(c, 0, strlen(name), name);
+}
+
 void activate(GtkApplication *app, __attribute__((unused)) gpointer user_data) {
   window = gtk_application_window_new(app);
 
@@ -184,6 +187,7 @@ void activate(GtkApplication *app, __attribute__((unused)) gpointer user_data) {
   gtk_widget_set_app_paintable(window, TRUE);
   gtk_widget_set_app_paintable(fixed_container, TRUE);
 #endif
+
   gtk_widget_set_size_request(GTK_WIDGET(web_view), overlay_width, overlay_height);
   gtk_fixed_put(GTK_FIXED(fixed_container), GTK_WIDGET(web_view), options.x, options.y);
 
@@ -196,24 +200,31 @@ void activate(GtkApplication *app, __attribute__((unused)) gpointer user_data) {
 #endif
 
   if (GDK_IS_X11_DISPLAY(display)) {
-    fprintf(stderr, "Setting some EWMH for X11...\n");
 #if GTK_MAJOR_VERSION == 3
     GdkWindow *gdk_window = gtk_widget_get_window(GTK_WIDGET(window));
-    gdk_window_set_skip_pager_hint(gdk_window, TRUE);
-    gdk_window_set_skip_taskbar_hint(gdk_window, TRUE);
+    xcb_window_t xcb_window = GDK_WINDOW_XID(gdk_window);
 #else
-    GdkSurface *surface = gtk_native_get_surface(GTK_NATIVE(window));
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    // TODO: use xcb ewmh to set these things
-    gdk_x11_surface_set_skip_pager_hint(surface, TRUE);
-    gdk_x11_surface_set_skip_taskbar_hint(surface, TRUE);
-#pragma clang diagnostic pop
+    GdkSurface *gdk_window = gtk_native_get_surface(GTK_NATIVE(window));
+    G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+    xcb_window_t xcb_window = GDK_SURFACE_XID(gdk_window);
+    G_GNUC_END_IGNORE_DEPRECATIONS;
 #endif
+    xcb_connection_t *connection = xcb_connect(NULL, NULL);
+    if (xcb_connection_has_error(connection)) {
+      fprintf(stderr, "Cannot connect to X server\n");
+      exit(1);
+    }
+    char *atoms[] = {"_NET_WM_STATE_SKIP_TASKBAR", "_NET_WM_STATE_SKIP_PAGER", "_NET_WM_STATE_ABOVE"};
+    for (int i = 0; i < 3; i++) {
+      xcb_intern_atom_cookie_t cookie = xcb_intern(connection, atoms[i]);
+      xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, NULL);
+      int value = 1;
+      xcb_change_property(connection, XCB_PROP_MODE_REPLACE, xcb_window, reply->atom, XCB_ATOM_ATOM, 32, 1, &value);
+      free(reply);
+    }
+    xcb_flush(connection);
+    xcb_disconnect(connection);
   }
-#if GTK_MAJOR_VERSION == 3
-  gtk_window_set_keep_above(GTK_WINDOW(window), TRUE);
-#endif
 
   app_set_edit_mode(false);
 }

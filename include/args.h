@@ -13,7 +13,6 @@
 struct arguments {
   char *tosu_url; ///< The base URL of the Tosu server
   int monitor; ///< The monitor number to display on
-  bool fullscreen; ///< Display the window in fullscreen
   int width; ///< The width of the overlay
   int height; ///< The height of the overlay
   int x; ///< The x position of the overlay

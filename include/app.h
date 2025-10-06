@@ -7,6 +7,8 @@
 
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
+#include <xcb/xcb.h>
+#include <xcb/xcb_ewmh.h>
 
 #if GTK_MAJOR_VERSION == 3
 
