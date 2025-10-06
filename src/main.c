@@ -15,11 +15,6 @@ static void ipc_callback(__attribute__((unused)) const char *data) {
 int main(int argc, char *argv[]) {
   // set defaults for options
   options.tosu_url = "http://127.0.0.1:24050";
-  options.monitor = 0;
-  options.width = 1920;
-  options.height = 1080;
-  options.x = 0;
-  options.y = 0;
   error_t error = argp_parse(&argp, argc, argv, 0, 0, &options);
 
   if (error != 0) {

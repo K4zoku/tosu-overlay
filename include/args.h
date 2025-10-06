@@ -14,12 +14,13 @@ struct arguments {
   char *tosu_url; ///< The base URL of the Tosu server
   int monitor; ///< The monitor number to display on
   bool fullscreen; ///< Display the window in fullscreen
-  int width; ///< The width of the window
-  int height; ///< The height of the window
-  int x; ///< The x position of the window
-  int y; ///< The y position of the window
+  int width; ///< The width of the overlay
+  int height; ///< The height of the overlay
+  int x; ///< The x position of the overlay
+  int y; ///< The y position of the overlay
   bool verbose; ///< Verbose output
   bool version; ///< Print version and exit
+  bool layer_shell_enabled; ///< Enable layer shell
   bool edit; ///< Edit mode signal
 };
 

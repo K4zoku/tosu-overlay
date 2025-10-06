@@ -13,10 +13,11 @@ static struct argp_option argp_options[] = {
     // {"fullscreen", 'f', 0, OPTION_ARG_OPTIONAL, "Fullscreen the window.", 0},
     {"verbose", 'V', 0, OPTION_ARG_OPTIONAL, "Verbose output.", 0},
     {"version", 'v', 0, OPTION_ARG_OPTIONAL, "Print version and exit.", 0},
-    // {"width", 'w', "width", OPTION_ARG_OPTIONAL, "The width of the window.", 0},
-    // {"height", 'h', "height", OPTION_ARG_OPTIONAL, "The height of the window.", 0},
-    // {"x", 'x', "x", OPTION_ARG_OPTIONAL, "The x position of the window.", 0},
-    // {"y", 'y', "y", OPTION_ARG_OPTIONAL, "The y position of the window.", 0},
+    {"layer-shell-enabled", 'l', 0, OPTION_ARG_OPTIONAL, "Enable layer shell.", 0},
+    {"width", 'w', "width", OPTION_ARG_OPTIONAL, "The width of the window.", 0},
+    {"height", 'h', "height", OPTION_ARG_OPTIONAL, "The height of the window.", 0},
+    {"x", 'x', "x", OPTION_ARG_OPTIONAL, "The x position of the window.", 0},
+    {"y", 'y', "y", OPTION_ARG_OPTIONAL, "The y position of the window.", 0},
     {"ipc-edit", 'e', 0, OPTION_ARG_OPTIONAL, "Send an IPC signal to edit the overlay.", 0},
     {0}};
 
@@ -37,6 +38,9 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
     break;
   case 'v':
     arguments->version = true;
+    break;
+  case 'l':
+    arguments->layer_shell_enabled = true;
     break;
   case 'w':
     arguments->width = (int)strtol(arg, NULL, 10);

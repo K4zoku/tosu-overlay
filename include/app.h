@@ -3,16 +3,35 @@
 #ifndef GTK_HEADER_H
 #define GTK_HEADER_H
 
-#include <gdk/gdk.h>
-#include <gtk4-layer-shell.h>
-#include <gtk/gtk.h>
 #include <stdbool.h>
+
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
+
+#if GTK_MAJOR_VERSION == 3
+
+#include <gtk-layer-shell.h>
+
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
+#endif
+
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
+
+#else
+
+#include <gtk4-layer-shell.h>
 
 #ifdef GDK_WINDOWING_WAYLAND
 #include <gdk/wayland/gdkwayland.h>
 #endif
+
 #ifdef GDK_WINDOWING_X11
 #include <gdk/x11/gdkx.h>
+#endif
+
 #endif
 
 extern GtkApplication *app;
