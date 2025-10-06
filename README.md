@@ -59,15 +59,16 @@ sudo make PREFIX=/usr install
 ### 🪾 Project Structure
 
 ```
-.make/           # Makefile templates
-build/           # Build output directory
-distribution/    # Some files needed for distribute the project
-  bin/           # Executable output directory
-  lib/           # Library output directory
-  obj/           # Object file output directory
-  test/          # Unit test output directory
-docs/            # Documentation files
-include/         # Public header files
-src/             # Source files
-test/            # Unit test files
+.
+├─ .make/           # Makefile templates
+├─ distribution/    # Some files needed for distribute the project
+├─ build/           # Build output directory
+│  ├─ bin/          # Executable output directory
+│  ├─ lib/          # Library output directory
+│  ├─ obj/          # Object file output directory
+│  └─ test/         # Unit test output directory
+├─ docs/            # Documentation files
+├─ include/         # Header files
+├─ src/             # Source files
+├─ test/            # Unit test files
 ```
