@@ -19,7 +19,7 @@ struct arguments {
   int y; ///< The y position of the overlay
   bool verbose; ///< Verbose output
   bool version; ///< Print version and exit
-  bool layer_shell_enabled; ///< Enable layer shell
+  bool layer_shell_disabled; ///< Enable layer shell
   bool edit; ///< Edit mode signal
   bool visible; ///< Visibility signal
 };

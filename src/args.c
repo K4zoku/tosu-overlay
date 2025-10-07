@@ -12,7 +12,7 @@ static struct argp_option argp_options[] = {
     {"monitor", 'm', "monitor-id", OPTION_ARG_OPTIONAL, "The monitor number to display on.", 0},
     {"verbose", 'V', 0, OPTION_ARG_OPTIONAL, "Verbose output.", 0},
     {"version", 'v', 0, OPTION_ARG_OPTIONAL, "Print version and exit.", 0},
-    {"layer-shell-enabled", 'l', 0, OPTION_ARG_OPTIONAL, "Enable layer shell.", 0},
+    {"layer-shell-disabled", 'l', 0, OPTION_ARG_OPTIONAL, "Disable layer shell (wayland only).", 0},
     {"width", 'w', "width", OPTION_ARG_OPTIONAL, "The width of the overlay.", 0},
     {"height", 'h', "height", OPTION_ARG_OPTIONAL, "The height of the overlay.", 0},
     {"x", 'x', "x", OPTION_ARG_OPTIONAL, "The x position of the overlay.", 0},
@@ -37,7 +37,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
     arguments->version = true;
     break;
   case 'l':
-    arguments->layer_shell_enabled = true;
+    arguments->layer_shell_disabled = true;
     break;
   case 'w':
     arguments->width = (int)strtol(arg, NULL, 10);

@@ -1,5 +1,6 @@
 #include "app.h"
 #include "args.h"
+#include "gtk4-layer-shell.h"
 #include "webkit.h"
 
 GtkApplication *app;
@@ -58,11 +59,12 @@ void app_destroy() {
 }
 
 static void layer_shell_init() {
-  if (!(options.layer_shell_enabled && GDK_IS_WAYLAND_DISPLAY(gdk_display_get_default()) && gtk_layer_is_supported())) {
+  if (options.layer_shell_disabled ||!gtk_layer_is_supported()) {
     return;
   }
 
   gtk_layer_init_for_window(GTK_WINDOW(window));
+  gtk_layer_set_exclusive_zone(GTK_WINDOW(window), -1);
   gtk_layer_set_layer(GTK_WINDOW(window), GTK_LAYER_SHELL_LAYER_OVERLAY);
   gtk_layer_set_keyboard_mode(GTK_WINDOW(window), GTK_LAYER_SHELL_KEYBOARD_MODE_NONE);
 
