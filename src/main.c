@@ -3,7 +3,7 @@
 #include "ipc.h"
 
 static const char *NAME = "tosu-overlay";
-static const char *VERSION = "1.0.0";
+static const char *VERSION = "1.0.1";
 static const char *GIT_URL = "https://github.com/K4zoku/tosu-overlay";
 
 bool edit_mode = false;
