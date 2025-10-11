@@ -1,11 +1,11 @@
 [Desktop Entry]
-Icon=tosu
+Icon=tosu-overlay
 Name=Tosu Overlay
 Comment=Overlay for osu! Powered by Tosu, GTK and Webkit
-Exec=/usr/bin/tosu-overlay
+Exec=env __NV_DISABLE_EXPLICIT_SYNC=1 /usr/bin/tosu-overlay
 NoDisplay=false
 PrefersNonDefaultGPU=false
-StartupNotify=true
+StartupNotify=false
 Terminal=false
 Type=Application
 Categories=Game;
