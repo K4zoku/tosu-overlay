@@ -19,7 +19,7 @@ VERSION=1.0.3
 
 project_info:
 	@echo "  * Project name: $(NAME)"
-	@echo "  * Project version: $(VERISON)"
+	@echo "  * Project version: $(VERSION)"
 	@echo "  * Project type: $(TYPE)"
 	@echo "  * Build profile: $(BUILD_PROFILE)"
 
