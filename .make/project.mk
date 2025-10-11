@@ -15,8 +15,11 @@ BUILD_PROFILE?=DEBUG
 # Installation prefix
 PREFIX?=/usr
 
+VERSION=1.0.3
+
 project_info:
 	@echo "  * Project name: $(NAME)"
+	@echo "  * Project version: $(VERISON)"
 	@echo "  * Project type: $(TYPE)"
 	@echo "  * Build profile: $(BUILD_PROFILE)"
 
@@ -52,10 +55,11 @@ TEST_BINARY_DIRECTORY:=$(BUILD_DIRECTORY)/$(TEST_DIRECTORY)
 # COMPILER CONFIGURATION #
 # ---------------------- #
 
-LIBRARIES_GTK3:=gtk+-3.0 webkit2gtk-4.1 gtk-layer-shell-0
-LIBRARIES_GTK4:=gtk4 webkitgtk-6.0 gtk4-layer-shell-0 
-
 GTK_VERSION?=3
+
+LIBRARIES_GTK3:=gtk+-3.0 webkit2gtk-4.1 gtk-layer-shell-0
+
+LIBRARIES_GTK4:=gtk4 webkitgtk-6.0 gtk4-layer-shell-0 
 
 LIBRARIES:=$(LIBRARIES_GTK$(GTK_VERSION)) xcb-ewmh
 
@@ -63,7 +67,7 @@ LIBRARIES:=$(LIBRARIES_GTK$(GTK_VERSION)) xcb-ewmh
 CC:=clang
 
 # Compiler flags
-CFLAGS:=-std=c11 `pkg-config --cflags $(LIBRARIES)`
+CFLAGS:=-std=c11 `pkg-config --cflags $(LIBRARIES)` -DPROJECT_NAME=\"$(NAME)\" -DPROJECT_VERSION=\"$(VERSION)\"
 
 # Preprocessor flags
 CPPFLAGS:=-Wall -Wextra
@@ -103,7 +107,7 @@ DEBUG_LDLIBS:=
 # Those flags will be appended to CFLAGS, CPPFLAGS, LDFLAGS, and LDLIBS.
 
 # Release compiler flags
-RELEASE_CFLAGS:=-O2
+RELEASE_CFLAGS:=-Os
 
 # Release preprocessor flags
 RELEASE_CPPFLAGS:=

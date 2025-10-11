@@ -2,9 +2,7 @@
 #include "args.h"
 #include "ipc.h"
 
-static const char *NAME = "tosu-overlay";
-static const char *VERSION = "1.0.2";
-static const char *GIT_URL = "https://github.com/K4zoku/tosu-overlay";
+#define GIT_URL "https://github.com/K4zoku/tosu-overlay"
 
 bool edit_mode = false;
 bool visible = true;
@@ -32,7 +30,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (options.version) {
-    printf("%s v%s\n%s\n", NAME, VERSION, GIT_URL);
+    printf("%s v%s\n%s\n", PROJECT_NAME, PROJECT_VERSION, GIT_URL);
     return 0;
   }
 
