@@ -56,6 +56,35 @@ sudo make PREFIX=/usr install
 
 **Note**: The binary will be installed to `PREFIX/bin/`
 
+## Usage
+
+```css
+Usage: tosu-overlay [OPTION...]
+            [-t tosu-url] [-m monitor-id] [-w width] [-h height] [-x x] [-y y]
+            [-efvV]
+Just an overlay for osu!. Powered by Tosu, GTK and Webkit
+
+  -e, --ipc-edit             Send an IPC signal to edit the overlay.
+  -h, --height[=height]      The height of the overlay.
+  -i, --ipc-visible          Send an IPC signal to toggle the overlay.
+  -l, --layer-shell-disabled Disable layer shell (wayland only).
+  -m, --monitor[=monitor-id] The monitor number to display on.
+  -t, --tosu-url[=tosu-url]  The base URL of the Tosu server.
+  -V, --verbose              Verbose output.
+  -w, --width[=width]        The width of the overlay.
+  -x, --x[=x]                The x position of the overlay.
+  -y, --y[=y]                The y position of the overlay.
+  -?, --help                 Give this help list
+      --usage                Give a short usage message
+  -v, --version              Print version and exit.
+```
+
+## ❓ FAQ
+
+### 'error dispatching to Wayland display' on Nvidia GPU
+
+Run tosu-overlay with `__NV_DISABLE_EXPLICIT_SYNC=1` environment variable.
+
 ### 🪾 Project Structure
 
 ```
