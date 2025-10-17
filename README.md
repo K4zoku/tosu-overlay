@@ -7,6 +7,8 @@
 > An overlay for osu!. Powered by Tosu, GTK and Webkit.
 > Only support Linux, for Windows, please use the official [tosu overlay](https://github.com/tosuapp/tosu).
 
+> **⚠️ NOTICE ⚠️:** This repository is now archived. The development of **tosu-overlay** has been transitioned to a new project, **[tosu-overlay-qt](https://github.com/K4zoku/tosu-overlay-qt)** due to performance improvements, additional features, and more regular updates.
+
 ## ✨ Features
 
 - [x] Transparent window.
